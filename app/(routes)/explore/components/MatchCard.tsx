@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useTheme } from "next-themes";
+import { useTheme } from "next-themes"; // Import the `useTheme` hook
 
 type Match = {
   id: number;
@@ -18,7 +18,7 @@ type MatchCardProps = {
 };
 
 const MatchCard: React.FC<MatchCardProps> = ({ match, onLike, onDislike }) => {
-  const { theme } = useTheme(); // Access the current theme
+  const { theme } = useTheme(); // Get the current theme
 
   return (
     <div
@@ -26,7 +26,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onLike, onDislike }) => {
         theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"
       }`}
     >
-      {/* Profile Image */}
       <Image
         src={match.image}
         alt={match.name}
@@ -34,12 +33,8 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onLike, onDislike }) => {
         width={500}
         height={500}
       />
-      {/* Profile Details */}
-      <h2 className="text-lg font-bold">
-        {match.name}, {match.age}
-      </h2>
+      <h2 className="text-lg font-bold">{`${match.name}, ${match.age}`}</h2>
       <p className="text-gray-600 dark:text-gray-300 mb-4">{match.bio}</p>
-      {/* Actions */}
       <div className="flex justify-between">
         <button
           onClick={() => onDislike(match.id)}

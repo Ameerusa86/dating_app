@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MatchCard from "./components/MatchCard";
+import { useTheme } from "next-themes"; // Import the `useTheme` hook
 
 type Match = {
   id: number;
@@ -12,6 +13,9 @@ type Match = {
 };
 
 const ExplorePage: React.FC = () => {
+  const [isMounted, setIsMounted] = useState(false); // Track hydration
+  const { theme } = useTheme(); // Get the current theme (light/dark)
+
   const [matches, setMatches] = useState<Match[]>([
     {
       id: 1,
@@ -36,6 +40,16 @@ const ExplorePage: React.FC = () => {
     },
   ]);
 
+  // Handle hydration
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // If not mounted, avoid rendering dark/light dependent styles
+  if (!isMounted) {
+    return null;
+  }
+
   const handleLike = (id: number) => {
     alert(`You liked ${matches.find((match) => match.id === id)?.name}`);
   };
@@ -45,8 +59,14 @@ const ExplorePage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto mt-20 px-4 ">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-white dark:drop-shadow-lg mb-6">
+    <div className="container mx-auto px-4 py-6">
+      <h1
+        className={`text-3xl font-bold mb-6 ${
+          theme === "dark"
+            ? "text-white drop-shadow-lg"
+            : "text-gray-800 drop-shadow-md"
+        }`}
+      >
         Explore Matches
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

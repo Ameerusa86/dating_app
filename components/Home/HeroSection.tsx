@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 
 export default function HeroSection() {
   return (
-    <section className="relative pt-20 md:pt-24 bg-gradient-to-r from-rose-500 via-pink-400 to-red-400 text-white">
+    <section className="relative pt-20 -mt-20 md:pt-24 bg-gradient-to-r from-rose-500 via-pink-400 to-red-400 text-white">
       {/* Background */}
       <Image
-        src="/images/hero-bg.jpg"
+        src="/images/avatars/person1.jpg"
         alt="Dating App Background"
         fill
         className="object-cover opacity-60"
