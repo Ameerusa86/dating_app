@@ -14,16 +14,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import links from "@/constants/NavLinks";
-import { useTheme } from "next-themes"; // Import the useTheme hook
+import { useTheme } from "next-themes";
+import { useSession } from "next-auth/react";
+import UserMenu from "../Auth/UserMenu";
+import { useRouter } from "next/navigation";
+import LogoutComponent from "../Auth/Logout";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false); // To handle hydration issue
-  const { theme, setTheme } = useTheme(); // Use the theme hook from next-themes
-  const isAuthenticated = false; // Replace with actual auth check
-  const user = { name: "Ameer", profileImage: "/images/user-avatar.png" }; // Replace with actual user data
+  const { theme, setTheme } = useTheme();
+  const session = useSession();
 
+  // Handle hydration mismatch
   useEffect(() => {
     setIsMounted(true); // Ensures hydration sync
   }, []);
@@ -34,8 +38,8 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-gradient-to-r from-pink-500 to-red-500 fixed top-0 w-full z-10 shadow-lg">
-        <div className="container mx-auto flex justify-between items-center px-4 py-3">
+      <nav className="bg-gradient-to-r from-pink-500 to-red-500 fixed top-0 w-full z-50 shadow-lg">
+        <div className="mx-auto flex justify-between items-center px-4 py-3">
           {/* Logo */}
           <div className="text-xl font-extrabold text-white">
             <Link href="/">💖 DatingApp</Link>
@@ -54,8 +58,8 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Icons Section */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Icons and User Info */}
+          <div className="flex items-center space-x-4">
             {/* Search */}
             <button
               className="text-white hover:text-yellow-300 transition duration-300"
@@ -85,17 +89,15 @@ const Navbar = () => {
                 <FaRegMoon className="w-5 h-5" />
               )}
             </button>
-          </div>
 
-          {/* Login/Logout */}
-          <div className="hidden md:flex">
-            {isAuthenticated ? (
-              <Button
-                variant="outline"
-                className="text-white border-white hover:bg-white hover:text-red-500"
-              >
-                Logout
-              </Button>
+            {/* Login/Logout */}
+            {session.data?.user ? (
+              <UserMenu
+                name={session.data.user.name ?? "User"}
+                profileImage={
+                  session.data.user.image ?? "/images/default-avatar.png"
+                }
+              />
             ) : (
               <Link
                 href="/auth/login"
@@ -109,7 +111,7 @@ const Navbar = () => {
           {/* Hamburger Menu */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-white focus:outline-none"
+            className="lg:hidden text-white focus:outline-none"
           >
             {isMenuOpen ? (
               <IoClose className="w-6 h-6" />
@@ -121,7 +123,7 @@ const Navbar = () => {
 
         {/* Mobile Dropdown Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-pink-600 py-3 space-y-2">
+          <div className="lg:hidden bg-pink-600 py-3 space-y-2 z-50">
             {links.map((link) => (
               <Link
                 key={link.name}
@@ -132,13 +134,15 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-            {!isAuthenticated && (
+            {!session.data?.user ? (
               <Link
                 href="/auth/login"
                 className="block px-4 py-2 bg-white text-pink-500 font-bold rounded-md hover:bg-yellow-300 hover:text-pink-600"
               >
                 Login
               </Link>
+            ) : (
+              <LogoutComponent />
             )}
           </div>
         )}

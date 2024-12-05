@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 body {
-  font-family: "Poppins", Arial, Helvetica, sans-serif;
   line-height: 1.6;
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+  margin-top: 5rem;
 }
 
 @layer base {
