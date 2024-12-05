@@ -23,7 +23,7 @@ const PreferencesPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8 px-4">
+    <div className="container mx-auto mt-20 px-4">
       {/* Page Title */}
       <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">
         Match Preferences

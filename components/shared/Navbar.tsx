@@ -2,153 +2,166 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaRegMoon, FaSun, FaBell } from "react-icons/fa";
+import { FaRegMoon, FaSun, FaBell, FaSearch } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
-import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import links from "@/constants/NavLinks";
+import { useTheme } from "next-themes"; // Import the useTheme hook
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false); // For theme toggle
-  const [isMounted, setIsMounted] = useState(false); // To check if the component is mounted
+  const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false); // To handle hydration issue
+  const { theme, setTheme } = useTheme(); // Use the theme hook from next-themes
   const isAuthenticated = false; // Replace with actual auth check
   const user = { name: "Ameer", profileImage: "/images/user-avatar.png" }; // Replace with actual user data
 
-  // Ensure the component is mounted before rendering client-dependent elements
   useEffect(() => {
-    setIsMounted(true);
+    setIsMounted(true); // Ensures hydration sync
   }, []);
 
+  if (!isMounted) {
+    return null; // Avoid hydration mismatch
+  }
+
   return (
-    <nav className="bg-white dark:bg-gray-900 fixed top-0 w-full z-10 shadow-md">
-      <div className="container mx-auto flex justify-between items-center px-4 py-3">
-        {/* Logo */}
-        <div className="text-lg font-bold text-gray-800 dark:text-white">
-          <Link href="/">DatingApp</Link>
-        </div>
+    <>
+      <nav className="bg-gradient-to-r from-pink-500 to-red-500 fixed top-0 w-full z-10 shadow-lg">
+        <div className="container mx-auto flex justify-between items-center px-4 py-3">
+          {/* Logo */}
+          <div className="text-xl font-extrabold text-white">
+            <Link href="/">💖 DatingApp</Link>
+          </div>
 
-        {/* Search Bar (Hidden on small screens) */}
-        <div className="hidden md:flex w-1/3">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+          {/* Navigation Links */}
+          <div className="hidden md:flex items-center space-x-6">
+            {links.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-white font-medium hover:text-yellow-300 transition duration-300"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
 
-        {/* Right Section */}
-        <div className="hidden md:flex items-center space-x-4">
-          {/* Notifications */}
-          <button
-            className="text-gray-600 dark:text-gray-300 hover:text-blue-500"
-            aria-label="Notifications"
-          >
-            <FaBell className="w-5 h-5" />
-          </button>
-
-          {/* Theme Toggle */}
-          {isMounted && (
+          {/* Icons Section */}
+          <div className="hidden md:flex items-center space-x-4">
+            {/* Search */}
             <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="text-gray-600 dark:text-gray-300 hover:text-blue-500"
+              className="text-white hover:text-yellow-300 transition duration-300"
+              aria-label="Search"
+              onClick={() => setIsSearchDialogOpen(true)}
+            >
+              <FaSearch className="w-5 h-5" />
+            </button>
+
+            {/* Notifications */}
+            <button
+              className="text-white hover:text-yellow-300 transition duration-300"
+              aria-label="Notifications"
+            >
+              <FaBell className="w-5 h-5" />
+            </button>
+
+            {/* Theme Toggle */}
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="text-white hover:text-yellow-300 transition duration-300"
               aria-label="Toggle Theme"
             >
-              {isDarkMode ? (
-                <FaRegMoon className="w-5 h-5" />
-              ) : (
+              {theme === "dark" ? (
                 <FaSun className="w-5 h-5" />
+              ) : (
+                <FaRegMoon className="w-5 h-5" />
               )}
             </button>
-          )}
+          </div>
 
-          {/* User Auth Buttons */}
-          {isMounted && isAuthenticated ? (
-            <div className="relative">
-              <Image
-                src={user.profileImage}
-                alt="Profile"
-                width={40}
-                height={40}
-                className="rounded-full cursor-pointer"
-              />
-            </div>
-          ) : (
-            isMounted && (
-              <>
-                <Link
-                  href="/auth/login"
-                  className="text-gray-600 dark:text-gray-300 hover:text-blue-500"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/auth/register"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                >
-                  Sign Up
-                </Link>
-              </>
-            )
-          )}
-        </div>
-
-        {/* Mobile Section */}
-        <div className="md:hidden flex items-center space-x-4">
-          {/* Notifications */}
-          <button
-            className="text-gray-600 dark:text-gray-300 hover:text-blue-500"
-            aria-label="Notifications"
-          >
-            <FaBell className="w-5 h-5" />
-          </button>
-
-          {/* Theme Toggle */}
-          {isMounted && (
-            <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="text-gray-600 dark:text-gray-300 hover:text-blue-500"
-              aria-label="Toggle Theme"
-            >
-              {isDarkMode ? (
-                <FaRegMoon className="w-5 h-5" />
-              ) : (
-                <FaSun className="w-5 h-5" />
-              )}
-            </button>
-          )}
+          {/* Login/Logout */}
+          <div className="hidden md:flex">
+            {isAuthenticated ? (
+              <Button
+                variant="outline"
+                className="text-white border-white hover:bg-white hover:text-red-500"
+              >
+                Logout
+              </Button>
+            ) : (
+              <Link
+                href="/auth/login"
+                className="px-4 py-2 bg-white text-pink-700 font-bold rounded-md hover:bg-yellow-300 hover:text-pink-900 transition duration-300"
+              >
+                Login
+              </Link>
+            )}
+          </div>
 
           {/* Hamburger Menu */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-gray-800 dark:text-white focus:outline-none"
+            className="md:hidden text-white focus:outline-none"
           >
             {isMenuOpen ? (
-              <IoClose className="w-5 h-5" />
+              <IoClose className="w-6 h-6" />
             ) : (
-              <RxHamburgerMenu className="w-5 h-5" />
+              <RxHamburgerMenu className="w-6 h-6" />
             )}
           </button>
         </div>
-      </div>
 
-      {/* Mobile Dropdown Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-800 py-3">
-          <Link
-            href="/"
-            className="block px-4 py-2 text-gray-600 dark:text-gray-300"
+        {/* Mobile Dropdown Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-pink-600 py-3 space-y-2">
+            {links.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="block px-4 py-2 text-white hover:bg-pink-700 rounded-md"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+            {!isAuthenticated && (
+              <Link
+                href="/auth/login"
+                className="block px-4 py-2 bg-white text-pink-500 font-bold rounded-md hover:bg-yellow-300 hover:text-pink-600"
+              >
+                Login
+              </Link>
+            )}
+          </div>
+        )}
+      </nav>
+
+      {/* Search Dialog */}
+      <Dialog open={isSearchDialogOpen} onOpenChange={setIsSearchDialogOpen}>
+        <DialogContent className="bg-white text-black rounded-lg">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-bold text-pink-500">
+              Search
+            </DialogTitle>
+          </DialogHeader>
+          <Input type="text" placeholder="Search..." className="w-full mb-4" />
+          <Button
+            className="w-full bg-pink-500 text-white hover:bg-red-500"
+            onClick={() => setIsSearchDialogOpen(false)}
           >
-            Home
-          </Link>
-          <Link
-            href="/profile"
-            className="block px-4 py-2 text-gray-600 dark:text-gray-300"
-          >
-            Profile
-          </Link>
-        </div>
-      )}
-    </nav>
+            Search
+          </Button>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

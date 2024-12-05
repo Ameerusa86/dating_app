@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useTheme } from "next-themes";
 
 type Match = {
   id: number;
@@ -17,8 +18,14 @@ type MatchCardProps = {
 };
 
 const MatchCard: React.FC<MatchCardProps> = ({ match, onLike, onDislike }) => {
+  const { theme } = useTheme(); // Access the current theme
+
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+    <div
+      className={`p-4 rounded-lg shadow-md transition-colors duration-300 ${
+        theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+      }`}
+    >
       {/* Profile Image */}
       <Image
         src={match.image}
@@ -28,7 +35,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onLike, onDislike }) => {
         height={500}
       />
       {/* Profile Details */}
-      <h2 className="text-lg font-bold text-gray-800 dark:text-white">
+      <h2 className="text-lg font-bold">
         {match.name}, {match.age}
       </h2>
       <p className="text-gray-600 dark:text-gray-300 mb-4">{match.bio}</p>

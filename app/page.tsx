@@ -1,9 +1,17 @@
-import Image from "next/image";
+import CallToAction from "@/components/Home/CallToAction";
+import FeaturesSection from "@/components/Home/FeaturesSection";
+import HeroSection from "@/components/Home/HeroSection";
+import StatsSection from "@/components/Home/StatsSection";
+import TestimonialsSection from "@/components/Home/TestimonialsSection";
 
 export default function Home() {
   return (
-    <div className="flex items-center justify-center text-black h-screen text-3xl">
-      <h1>Dating App</h1>
-    </div>
+    <main>
+      <HeroSection />
+      <FeaturesSection />
+      <TestimonialsSection />
+      <StatsSection />
+      <CallToAction />
+    </main>
   );
 }

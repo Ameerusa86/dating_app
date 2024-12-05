@@ -45,8 +45,8 @@ const ExplorePage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8 px-4">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">
+    <div className="container mx-auto mt-20 px-4 ">
+      <h1 className="text-3xl font-bold text-gray-800 dark:text-white dark:drop-shadow-lg mb-6">
         Explore Matches
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
