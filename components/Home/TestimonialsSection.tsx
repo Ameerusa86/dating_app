@@ -20,7 +20,7 @@ export default function TestimonialsSection() {
   ];
 
   return (
-    <section className="bg-gray-100 dark:bg-gray-800 py-16 transition-colors duration-300">
+    <section className="bg-gray-100 dark:bg-gray-700 py-16 transition-colors duration-300">
       <div className="container mx-auto text-center">
         <h2 className="text-3xl font-extrabold mb-8 text-gray-900 dark:text-gray-100">
           What Our Users Say
