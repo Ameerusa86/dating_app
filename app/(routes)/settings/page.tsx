@@ -19,7 +19,7 @@ const SettingsPage: React.FC = () => {
   }>({
     email: "user@example.com",
     password: "",
-    theme: "light", // Initialize as "light" or "dark"
+    theme: "light",
     notifications: true,
     publicProfile: true,
   });

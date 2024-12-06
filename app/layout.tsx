@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Abel } from "next/font/google";
 import "../styles/globals.css";
 import Navbar from "@/components/shared/Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SessionProvider } from "next-auth/react";
 
-const manrope = Manrope({
-  weight: ["400", "500", "600", "700"],
+const abel = Abel({
+  weight: ["400"],
   subsets: ["latin"],
 });
 
@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${manrope.className}`}>
+      <body className={`${abel.className} bg-background text-foreground`}>
         <SessionProvider>
           <ThemeProvider>
             <Navbar />

@@ -9,6 +9,12 @@ body {
   margin-top: 5rem;
 }
 
+.font-La-Belle-Aurore {
+  font-family: "La Belle Aurore", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
 @layer base {
   :root {
     --background: 340 82% 95%; /* Soft pink background */
