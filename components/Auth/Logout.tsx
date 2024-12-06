@@ -9,7 +9,12 @@ const LogoutComponent = () => {
 
   return (
     <div>
-      <Button onClick={handleGithubLogout}>Logout</Button>
+      <Button
+        className="flex w-16 px-4 py-2 bg-white text-pink-500 font-bold rounded-md hover:bg-pink-800 hover:text-white"
+        onClick={handleGithubLogout}
+      >
+        Logout
+      </Button>
     </div>
   );
 };

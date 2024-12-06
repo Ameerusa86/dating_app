@@ -17,7 +17,6 @@ import links from "@/constants/NavLinks";
 import { useTheme } from "next-themes";
 import { useSession } from "next-auth/react";
 import UserMenu from "../Auth/UserMenu";
-import { useRouter } from "next/navigation";
 import LogoutComponent from "../Auth/Logout";
 
 const Navbar = () => {
@@ -101,7 +100,7 @@ const Navbar = () => {
             ) : (
               <Link
                 href="/auth/login"
-                className="px-4 py-2 bg-white text-pink-700 font-bold rounded-md hover:bg-yellow-300 hover:text-pink-900 transition duration-300"
+                className="hidden lg:flex px-4 py-2 bg-white text-pink-700 font-bold rounded-md hover:bg-yellow-300 hover:text-pink-900 transition duration-300"
               >
                 Login
               </Link>
@@ -137,12 +136,14 @@ const Navbar = () => {
             {!session.data?.user ? (
               <Link
                 href="/auth/login"
-                className="block px-4 py-2 bg-white text-pink-500 font-bold rounded-md hover:bg-yellow-300 hover:text-pink-600"
+                className="block w-16 ml-4 px-4 py-2 bg-white text-pink-500 font-bold rounded-md hover:bg-pink-800 hover:text-white"
               >
                 Login
               </Link>
             ) : (
-              <LogoutComponent />
+              <div className="ml-4">
+                <LogoutComponent />
+              </div>
             )}
           </div>
         )}
